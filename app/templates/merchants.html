@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="panel">
+    <h1>Настройка мерчантов</h1>
+    <form class="form" action="/api/merchants" method="post">
+        <label>
+            Название
+            <input type="text" name="name" required />
+        </label>
+        <label>
+            Описание
+            <input type="text" name="description" />
+        </label>
+        <button type="submit">Добавить мерчанта</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>Товары</h2>
+    {% if merchants %}
+        {% for merchant in merchants %}
+            <div class="merchant-block">
+                <h3>{{ merchant.name }}</h3>
+                <p>{{ merchant.description }}</p>
+                <form class="form inline" action="/api/merchants/{{ merchant.id }}/products" method="post">
+                    <input type="text" name="name" placeholder="Товар" required />
+                    <input type="text" name="description" placeholder="Описание" />
+                    <input type="number" name="price_cents" placeholder="Цена (копейки)" required />
+                    <button type="submit">Добавить</button>
+                </form>
+                <ul class="product-list">
+                    {% for product in products if product.merchant_id == merchant.id %}
+                        <li>
+                            <strong>{{ product.name }}</strong> — {{ "%.2f" | format(product.price_cents / 100) }} ₽
+                            <span class="muted">{{ product.description }}</span>
+                        </li>
+                    {% else %}
+                        <li class="muted">Пока нет товаров</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="muted">Добавьте мерчанта, чтобы управлять товарами.</p>
+    {% endif %}
+</section>
+{% endblock %}

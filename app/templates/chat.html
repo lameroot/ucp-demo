@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="panel">
+    <h1>Чат клиента</h1>
+    <div class="chat-controls">
+        <label>
+            Мерчант
+            <select id="merchant-select">
+                {% for merchant in merchants %}
+                    <option value="{{ merchant.id }}">{{ merchant.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button id="load-catalog" type="button">Показать каталог</button>
+    </div>
+    <div id="chat-window" class="chat-window"></div>
+    <div class="chat-input">
+        <input id="chat-message" type="text" placeholder="Напишите сообщение..." />
+        <button id="send-message" type="button">Отправить</button>
+    </div>
+    <div class="chat-actions">
+        <button id="pay-order" type="button" disabled>Оплатить заказ</button>
+        <span id="order-status" class="muted"></span>
+    </div>
+</section>
+<script src="/static/app.js"></script>
+{% endblock %}
